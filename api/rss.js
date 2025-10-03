@@ -47,7 +47,8 @@ export default function handler(req, res) {
   </channel>
 </rss>`;
 
-  res.setHeader("Content-Type", "application/rss+xml; charset=utf-8");
+  // 👉 Variante 2: Browser + RSS-Reader freundlich
+  res.setHeader("Content-Type", "text/xml; charset=utf-8");
   res.setHeader("Cache-Control", "public, max-age=300");
   res.status(200).send(rss);
 }
@@ -76,7 +77,10 @@ function pickQuoteByDate(dateKey) {
     "Nichts erledigen, nur bemerken.",
     "Du musst nichts werden. Du bist schon."
   ];
-  let hash = 0; for (let i = 0; i < dateKey.length; i++) hash = (hash * 31 + dateKey.charCodeAt(i)) >>> 0;
+  let hash = 0; 
+  for (let i = 0; i < dateKey.length; i++) {
+    hash = (hash * 31 + dateKey.charCodeAt(i)) >>> 0;
+  }
   const idx = hash % quotes.length;
   return { quotes, idx };
 }
